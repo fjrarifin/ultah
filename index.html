@@ -1,308 +1,410 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>HBD Bekti Pujihastuti</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap" rel="stylesheet">
-  <style>
-    html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  font-family: 'Quicksand', sans-serif;
-}
-
-body {
-  background: linear-gradient(135deg, #00c9ff, #92fe9d); /* biru tosca gradasi */
-  background-size: cover;
-  background-position: center;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  overflow-x: hidden;
-  text-align: center;
-  padding: 20px;
-  box-sizing: border-box;
-}
-
-
-    h1, h2 {
-      font-size: 1.6rem;
-      color: #000;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-      margin-bottom: 20px;
-    }
-
-    .btn-container, .umur-container {
-      display: flex;
-      gap: 15px;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-
-    .btn {
-      padding: 12px 24px;
-      font-size: 1rem;
-      border: none;
-      border-radius: 15px;
-      cursor: pointer;
-      transition: transform 0.2s ease;
-      box-shadow: 2px 4px 10px rgba(0,0,0,0.2);
-    }
-
-    .btn:hover {
-      transform: scale(1.05);
-    }
-
-    .btn-yes {
-      background: linear-gradient(135deg, #ff7e5f, #feb47b);
-      color: white;
-    }
-
-    .btn-no {
-      background: linear-gradient(135deg, #d4145a, #fbb03b);
-      color: white;
-    }
-
-    .btn-umur {
-      background: linear-gradient(135deg, #36d1dc, #5b86e5);
-      color: white;
-    }
-
-    .hidden { display: none; }
-
-    /* Modal Style */
-    .modal {
-      display: none;
-      position: fixed;
-      z-index: 10;
-      left: 0;
-      top: 0;
-      width: 100%;
-      min-height: 100vh;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.5);
-    }
-
-    .modal-content {
-      background-color: #fff;
-      margin: 20% auto;
-      padding: 30px 20px;
-      border-radius: 15px;
-      width: 90%;
-      max-width: 400px;
-      text-align: center;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-	  color: #444;
-    }
-
-    .modal-content h2 {
-      font-size: 1.3rem;
-      color: #444;
-    }
-
-    .close-btn {
-      margin-top: 15px;
-      padding: 10px 20px;
-      background-color: #ff4081;
-      color: white;
-      border: none;
-      border-radius: 10px;
-      cursor: pointer;
-    }
-
-    textarea {
-      width: 90%;
-      max-width: 500px;
-      padding: 15px;
-      border-radius: 12px;
-      border: 2px solid #ffc107;
-      font-size: 1rem;
-      font-family: 'Quicksand', sans-serif;
-      box-shadow: 2px 4px 10px rgba(0,0,0,0.1);
-    }
-
-    #quoteAkhir p {
-      color: white;
-      text-shadow: 1px 1px 3px #000;
-    }
-  </style>
-</head>
-
-<body>
-
-<!-- Modal Awal -->
-  <div id="modalAwal" class="modal" style="display: block;">
-    <div class="modal-content">
-      <h1>🎉 Hai, Bekti Pujihastuti</h1>
-      <button class="close-btn" onclick="mulaiHalaman()">Hai juga ....</button>
-    </div>
-  </div>
-
-<audio id="audioUlangTahun" src="ulangtahun.mp3" preload="auto" loop></audio>
-
-  <h1>🎂 Kamu ultah kan hari ini?</h1>
-
-  <div class="btn-container">
-    <button class="btn btn-yes" onclick="lanjutPertanyaan()">Iya</button>
-    <button class="btn btn-no" onclick="jawabTidak()">Enggak</button>
-  </div>
-
-  <!-- Step 2: Umur -->
-  <div id="stepUmur" class="hidden">
-    <h2>Yang keberapa sekarang?</h2>
-    <div class="umur-container">
-      <button class="btn btn-umur" onclick="cekUmur(23)">23</button>
-      <button class="btn btn-umur" onclick="cekUmur(25)">25</button>
-      <button class="btn btn-umur" onclick="cekUmur(30)">30</button>
-      <button class="btn btn-umur" onclick="cekUmur(33)">33</button>
-      <button class="btn btn-umur hidden" id="btn17" onclick="cekUmur(17)">17</button>
-    </div>
-  </div>
-
-  <!-- Modal -->
-  <div id="modal" class="modal">
-    <div class="modal-content">
-      <h2 id="modalMessage">Modal isi</h2>
-      <button class="close-btn" onclick="tutupModal()">Oke 😅</button>
-    </div>
-  </div>
-  
-  <!-- Tambahan di bawah script sebelumnya -->
-<div id="formHarapan" class="hidden">
-  <h2>🙏 Apa doa dan harapan kamu di tahun ini?</h2>
-  <textarea id="inputHarapan" rows="4" placeholder="Tulis di sini..." style="width:90%; max-width:500px; padding:10px; border-radius:10px; border:1px solid #ccc;"></textarea>
-  <br><br>
-  <button class="btn btn-yes" onclick="kirimHarapan()">Kirim</button>
-</div>
-
-<div id="quoteAkhir" class="hidden">
-  <h2>🎁 Pesan untuk kamu hari ini</h2>
-  <p style="font-size: 1.1rem; max-width: 500px; margin: auto; line-height: 1.6;">
-    Kamu kuat, kamu hebat, dan kamu pantas untuk bahagia.  
-    Semangat terus ya, apapun yang kamu doain hari ini… semoga terkabul satu per satu.  
-    🎂✨💖
-  </p>
-</div>
-
-  <script>
-  function mulaiHalaman() {
-      document.getElementById("modalAwal").style.display = "none";
-
-      // Play musik
-      const audio = document.getElementById("audioUlangTahun");
-      audio.play().catch(err => console.log("Audio gagal nyala:", err));
-
-      // Tampilkan pertanyaan pertama
-      document.getElementById("pertanyaan").classList.remove("hidden");
-      document.getElementById("tombolYaTidak").classList.remove("hidden");
-    }
-	
-    function jawabTidak() {
-      showModal("😏 Kamu jangan bohong ah!");
-    }
-
-    function lanjutPertanyaan() {
-      document.querySelector('.btn-container').style.display = 'none';
-      document.getElementById('stepUmur').classList.remove('hidden');
-    }
-
-    function cekUmur(umur) {
-      if (umur === 33) {
-        showModal("Masa 33 sih? Kaya 17 tapi ah, udah pilih 17 aja 😜");
-        document.getElementById("btn17").classList.remove("hidden");
-      } else if (umur === 17) {
-        showModal("Umur hanyalah angka, tapi jiwa selalu muda.. hehe 😁");
-      } else {
-        showModal("Hmm... Coba pikir-pikir lagi deh 😅");
+  <head>
+    <meta charset="UTF-8" />
+    <title>HBD, Bekti Pujihastuti</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Quicksand:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      html,
+      body {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        font-family: "Quicksand", sans-serif;
       }
-    }
 
-    function showModal(pesan) {
-      document.getElementById("modalMessage").textContent = pesan;
-      document.getElementById("modal").style.display = "block";
-    }
-
-    function tutupModal() {
-      document.getElementById("modal").style.display = "none";
-    }
-
-    window.onclick = function(event) {
-      const modal = document.getElementById("modal");
-      if (event.target == modal) {
-        modal.style.display = "none";
+      body {
+        background: linear-gradient(
+          135deg,
+          #00c9ff,
+          #92fe9d
+        ); /* biru tosca gradasi */
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        overflow-x: hidden;
+        text-align: center;
+        padding: 20px;
+        box-sizing: border-box;
       }
-    }
-	let sudahKlik17 = false;
 
-  function cekUmur(umur) {
-    if (umur === 33) {
-      showModal("Masa 33 sih? Kaya 17 tapi ah, udah pilih 17 aja 😜");
-      document.getElementById("btn17").classList.remove("hidden");
-    } else if (umur === 17) {
-      sudahKlik17 = true;
-      showModal("Nah kan bener 17, cocok soalnya hehe 😁");
+      h1,
+      h2 {
+        font-size: 1.6rem;
+        color: #000;
+        text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        margin-bottom: 20px;
+      }
 
-      // Langsung sembunyikan div umur
-      document.getElementById("stepUmur").classList.add("hidden");
-    } else {
-      showModal("Hmm... Coba pikir-pikir lagi deh 😅");
-    }
-  }
+      .btn-container,
+      .umur-container {
+        display: flex;
+        gap: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+        margin-bottom: 20px;
+      }
 
-  function tutupModal() {
-  document.getElementById("modal").style.display = "none";
+      .btn {
+        padding: 12px 24px;
+        font-size: 1rem;
+        border: none;
+        border-radius: 15px;
+        cursor: pointer;
+        transition: transform 0.2s ease;
+        box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.2);
+      }
 
-  if (sudahKlik17 && !sudahKirimHarapan) {
-    document.getElementById("formHarapan").classList.remove("hidden");
-  }
+      .btn:hover {
+        transform: scale(1.05);
+      }
 
-  if (sudahKirimHarapan) {
-    document.getElementById("quoteAkhir").classList.remove("hidden");
-  }
-}
+      .btn-yes {
+        background: linear-gradient(135deg, #ff7e5f, #feb47b);
+        color: white;
+      }
 
-  function showModal(pesan) {
-    document.getElementById("modalMessage").textContent = pesan;
-    document.getElementById("modal").style.display = "block";
-  }
+      .btn-no {
+        background: linear-gradient(135deg, #d4145a, #fbb03b);
+        color: white;
+      }
 
-  window.onclick = function(event) {
-    const modal = document.getElementById("modal");
-    if (event.target == modal) {
-      modal.style.display = "none";
-    }
-  }
-  
-  function mulaiMusik() {
-    const audio = document.getElementById("audioUlangTahun");
-    audio.play().then(() => {
-      document.getElementById("introAudio").style.display = "none";
-    }).catch(err => {
-      alert("Musik gagal diputar: " + err);
-    });
-  }
-  
-  let sudahKirimHarapan = false;
-  
-  function kirimHarapan() {
-  const harapan = document.getElementById("inputHarapan").value.trim();
-  if (!harapan) {
-    alert("Tulis dulu dong harapannya 😅");
-    return;
-  }
+      .btn-umur {
+        background: linear-gradient(135deg, #36d1dc, #5b86e5);
+        color: white;
+      }
 
-  showModal(`🎉 Aamiin... Semoga doa sama harapan kamu bisa tercapai yaaa.. 🎂`);
-  document.getElementById("formHarapan").classList.add("hidden");
+      .hidden {
+        display: none;
+      }
 
-  // Setelah modal ditutup, tampilkan quote akhir
-  sudahKirimHarapan = true;
-}
-  </script>
+      /* Modal Style */
+      .modal {
+        display: none;
+        position: fixed;
+        z-index: 10;
+        left: 0;
+        top: 0;
+        width: 100%;
+        min-height: 100vh;
+        overflow: auto;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
 
-</body>
+      .modal-content {
+        background-color: #fff;
+        margin: 20% auto;
+        padding: 30px 20px;
+        border-radius: 15px;
+        width: 90%;
+        max-width: 400px;
+        text-align: center;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+        color: #444;
+      }
+
+      .modal-content h2 {
+        font-size: 1.3rem;
+        color: #444;
+      }
+
+      .close-btn {
+        margin-top: 15px;
+        padding: 10px 20px;
+        background-color: #ff4081;
+        color: white;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+      }
+
+      textarea {
+        width: 90%;
+        max-width: 500px;
+        padding: 15px;
+        border-radius: 12px;
+        border: 2px solid #ffc107;
+        font-size: 1rem;
+        font-family: "Quicksand", sans-serif;
+        box-shadow: 2px 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      #quoteAkhir p {
+        color: white;
+        text-shadow: 1px 1px 3px #000;
+      }
+
+      #typedText::after {
+        content: "|";
+        animation: blink 0.7s infinite;
+      }
+
+      @keyframes blink {
+        0%,
+        50% {
+          opacity: 1;
+        }
+        51%,
+        100% {
+          opacity: 0;
+        }
+      }
+    </style>
+  </head>
+
+  <body>
+    <!-- Modal Awal -->
+    <div id="modalAwal" class="modal" style="display: block">
+      <div class="modal-content">
+        <h1>🎉 Hai, Bekti Pujihastuti</h1>
+        <button class="close-btn" onclick="mulaiHalaman()">Hai juga...</button>
+      </div>
+    </div>
+
+    <audio
+      id="audioUlangTahun"
+      src="ulangtahun.mp3"
+      preload="auto"
+      loop
+    ></audio>
+
+    <h1>🎂 Kamu ultah kan hari ini?</h1>
+
+    <div class="btn-container">
+      <button class="btn btn-yes" onclick="lanjutPertanyaan()">Iya</button>
+      <button class="btn btn-no" onclick="jawabTidak()">Enggak</button>
+    </div>
+
+    <!-- Step 2: Umur -->
+    <div id="stepUmur" class="hidden">
+      <h2>Yang keberapa sekarang?</h2>
+      <div class="umur-container">
+        <button class="btn btn-umur" onclick="cekUmur(23)">23</button>
+        <button class="btn btn-umur" onclick="cekUmur(25)">25</button>
+        <button class="btn btn-umur" onclick="cekUmur(30)">30</button>
+        <button class="btn btn-umur" onclick="cekUmur(33)">33</button>
+        <button class="btn btn-umur hidden" id="btn17" onclick="cekUmur(17)">
+          17
+        </button>
+      </div>
+    </div>
+
+    <!-- Modal -->
+    <div id="modal" class="modal">
+      <div class="modal-content">
+        <h2 id="modalMessage">Modal isi</h2>
+        <button class="close-btn" onclick="tutupModal()">Oke 😅</button>
+      </div>
+    </div>
+
+    <!-- Tambahan di bawah script sebelumnya -->
+    <div id="formHarapan" class="hidden">
+      <h2>🙏 Apa doa dan harapan kamu di tahun ini?</h2>
+      <textarea
+        id="inputHarapan"
+        rows="4"
+        placeholder="Tulis di sini..."
+        style="
+          width: 90%;
+          max-width: 500px;
+          padding: 10px;
+          border-radius: 10px;
+          border: 1px solid #ccc;
+        "
+      ></textarea>
+      <br /><br />
+      <button class="btn btn-yes" onclick="kirimHarapan()">Kirim</button>
+    </div>
+
+    <div id="quoteAkhir" class="hidden">
+      <h2>🎁 Pesan untuk kamu hari ini</h2>
+      <p
+        id="typedText"
+        style="
+          font-size: 1.1rem;
+          max-width: 500px;
+          margin: auto;
+          line-height: 1.6;
+        "
+      ></p>
+    </div>
+
+    <script>
+      function mulaiHalaman() {
+        document.getElementById("modalAwal").style.display = "none";
+
+        // Play musik
+        const audio = document.getElementById("audioUlangTahun");
+        audio.play().catch((err) => console.log("Audio gagal nyala:", err));
+
+        // Tampilkan pertanyaan pertama
+        document.getElementById("pertanyaan").classList.remove("hidden");
+        document.getElementById("tombolYaTidak").classList.remove("hidden");
+      }
+
+      function jawabTidak() {
+        showModal("😏 Kamu jangan bohong ah!");
+      }
+
+      function lanjutPertanyaan() {
+        document.querySelector(".btn-container").style.display = "none";
+        document.getElementById("stepUmur").classList.remove("hidden");
+      }
+
+      function cekUmur(umur) {
+        if (umur === 33) {
+          showModal("Masa 33 sih? Kaya 17 tapi ah, udah pilih 17 aja 😜");
+          document.getElementById("btn17").classList.remove("hidden");
+        } else if (umur === 17) {
+          showModal("Umur hanyalah angka, tapi jiwa selalu muda.. hehe 😁");
+        } else {
+          showModal("Hmm... Coba pikir-pikir lagi deh 😅");
+        }
+      }
+
+      function showModal(pesan) {
+        document.getElementById("modalMessage").textContent = pesan;
+        document.getElementById("modal").style.display = "block";
+      }
+
+      window.onclick = function (event) {
+        const modal = document.getElementById("modal");
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+      let sudahKlik17 = false;
+
+      function cekUmur(umur) {
+        if (umur === 33) {
+          showModal("Masa 33 sih? Kaya 17 tapi ah, udah pilih 17 aja 😜");
+          document.getElementById("btn17").classList.remove("hidden");
+        } else if (umur === 17) {
+          sudahKlik17 = true;
+          showModal("Nah kan bener 17, cocok soalnya hehe 😁");
+
+          // Langsung sembunyikan div umur
+          document.getElementById("stepUmur").classList.add("hidden");
+        } else {
+          showModal("Hmm... Coba pikir-pikir lagi deh 😅");
+        }
+      }
+
+      function tutupModal() {
+        document.getElementById("modal").style.display = "none";
+
+        if (sudahKlik17 && !sudahKirimHarapan) {
+          document.getElementById("formHarapan").classList.remove("hidden");
+        }
+
+        if (sudahKirimHarapan) {
+          tampilkanQuoteAkhir(); // PANGGIL di sini
+        }
+      }
+
+      function showModal(pesan) {
+        document.getElementById("modalMessage").textContent = pesan;
+        document.getElementById("modal").style.display = "block";
+      }
+
+      window.onclick = function (event) {
+        const modal = document.getElementById("modal");
+        if (event.target == modal) {
+          modal.style.display = "none";
+        }
+      };
+
+      function mulaiMusik() {
+        const audio = document.getElementById("audioUlangTahun");
+        audio
+          .play()
+          .then(() => {
+            document.getElementById("introAudio").style.display = "none";
+          })
+          .catch((err) => {
+            alert("Musik gagal diputar: " + err);
+          });
+      }
+
+      let sudahKirimHarapan = false;
+
+      function kirimHarapan() {
+        const harapan = document.getElementById("inputHarapan").value.trim();
+        if (!harapan) {
+          alert("Tulis dulu dong harapannya 😅");
+          return;
+        }
+
+        showModal(
+          `🎉 Aamiin... Semoga doa sama harapan kamu bisa tercapai yaaa.. 🎂`
+        );
+        document.getElementById("formHarapan").classList.add("hidden");
+
+        // Setelah modal ditutup, tampilkan quote akhir
+        sudahKirimHarapan = true;
+      }
+      // Ambil teks baru untuk diketik
+      const pesanBaru = [
+        "Berapa usiamu sekarang?",
+        "Mengapa kamu begitu keras pada dirimu sendiri?",
+        "Bukankah di luar sana banyak orang yang ingin menjadi sepertimu?",
+        "Bukankah sudah banyak perjalanan berat yang berhasil kamu lalui?",
+        "Sudah saatnya kamu berterima kasih pada dirimu",
+        "Karena kamu sudah buktikan, di saat ada ribuan alasan untuk menyerah,",
+        "Kamu masih sanggup berdiri...",
+      ];
+
+      // Fungsi typewriter
+      function typeWriterLines(
+        element,
+        lines,
+        charSpeed = 50,
+        lineDelay = 500
+      ) {
+        let lineIndex = 0;
+
+        function ketikBaris() {
+          if (lineIndex < lines.length) {
+            let charIndex = 0;
+            element.innerHTML += "<div>"; // buat div perbaris
+            const currentDiv = element.lastElementChild;
+            function ketikHuruf() {
+              if (charIndex < lines[lineIndex].length) {
+                currentDiv.innerHTML += lines[lineIndex].charAt(charIndex++);
+                setTimeout(ketikHuruf, charSpeed);
+              } else {
+                lineIndex++;
+                setTimeout(ketikBaris, lineDelay); // jeda antar baris
+              }
+            }
+            ketikHuruf();
+          }
+        }
+        ketikBaris();
+      }
+
+      // Ketika menutup modal terakhir dan mau munculkan quoteAkhir
+      function tampilkanQuoteAkhir() {
+        const quoteDiv = document.getElementById("quoteAkhir");
+        const typedEl = document.getElementById("typedText");
+        quoteDiv.classList.remove("hidden");
+        typedEl.innerHTML = ""; // kosongin dulu
+        typeWriterLines(typedEl, pesanBaru, 100, 500);
+      }
+
+      // Panggil ini saat mau tampilkan pesan akhir
+      // Misalnya di dalam if (sudahKirimHarapan) { ... }
+      if (sudahKirimHarapan) {
+        tampilkanQuoteAkhir();
+      }
+    </script>
+  </body>
 </html>
